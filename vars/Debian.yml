@@ -1,0 +1,5 @@
+__postgres_install_packages:
+- postgresql
+- sudo # required for user switching
+- python3-psycopg2 # required for posgresql operations
+- libpq-dev
