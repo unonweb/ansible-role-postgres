@@ -19,6 +19,6 @@
     community.postgresql.postgresql_db:
       name: "{{ item.name }}"
       login_user: postgres
-      owner: "{{ item.name }}"
+      owner: "{{ item.owner }}"
       state: "{{ item.state | default('present') }}"
     notify: systemctl reload postgresql.service
