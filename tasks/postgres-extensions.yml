@@ -15,7 +15,7 @@
       - item.db != None
 
   # manage PostgreSQL extensions of a database
-  - name: Manage extensions {{ postgres_extensions }}
+  - name: Manage extensions
     become: true
     become_user: postgres
     loop: "{{ postgres_extensions }}"

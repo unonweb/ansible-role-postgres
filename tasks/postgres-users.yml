@@ -15,7 +15,7 @@
       - item.pw != None
 
   # create db user
-  - name: Create database user {{ postgres_db_user }}
+  - name: Manage database users
     become: true
     become_user: postgres
     loop: "{{ postgres_users }}"

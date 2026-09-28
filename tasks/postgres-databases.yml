@@ -12,7 +12,7 @@
       - item.owner != None
 
   # create db
-  - name: Create databases
+  - name: Manage databases
     become: true
     become_user: postgres
     loop: "{{ postgres_databases }}"
