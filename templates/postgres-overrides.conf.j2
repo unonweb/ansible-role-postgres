@@ -1,5 +1,13 @@
 {% if postgres_config_overrides is defined and postgres_config_overrides %}
 {% for key, value in postgres_config_overrides.items() %}
+{% if value is sameas true or value is sameas false %}
+{{ key }} = {{ value | lower }}
+{% elif value is number %}
 {{ key }} = {{ value }}
+{% elif value is mapping or value is sequence and value is not string %}
+{{ key }} = '{{ value | join(",") }}'
+{% else %}
+{{ key }} = '{{ value | replace("'", "''") }}'
+{% endif %}
 {% endfor %}
 {% endif %}
