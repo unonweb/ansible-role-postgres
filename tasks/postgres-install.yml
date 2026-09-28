@@ -1,0 +1,10 @@
+---
+- tags: [role-postgres-install]
+  block:
+
+  # install
+  - name: Install {{ __postgres_install_packages[ansible_os_family] + postgres_install_add_pkgs }}
+    become: true
+    ansible.builtin.package:
+      state: present
+      name: "{{ __postgres_install_packages[ansible_os_family] + postgres_install_add_pkgs}}"

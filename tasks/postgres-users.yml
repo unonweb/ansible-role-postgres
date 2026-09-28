@@ -1,0 +1,28 @@
+---
+- tags: [role-postgres-user]
+  when:
+  - postgres_users is not string
+  - postgres_users is iterable
+  - postgres_users | length > 0
+  block:
+
+  # assert
+  - name: Assertions for postgres-user
+    loop: "{{ postgres_users }}"
+    ansible.builtin.assert:
+      that:
+      - item.name != None
+      - item.pw != None
+
+  # create db user
+  - name: Create database user {{ postgres_db_user }}
+    become: true
+    become_user: postgres
+    loop: "{{ postgres_users }}"
+    community.postgresql.postgresql_user:
+      name: "{{ item.name }}"
+      password: "{{ item.pw }}"
+      state: "{{ item.state | default('present') }}"
+      encrypted: true
+    notify: 
+    - systemctl reload postgresql.service

@@ -1,0 +1,5 @@
+{% if postgres_config_overrides is defined and postgres_config_overrides %}
+{% for key, value in postgres_config_overrides.items() %}
+{{ key }} = {{ value }}
+{% endfor %}
+{% endif %}

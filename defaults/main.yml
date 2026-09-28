@@ -1,0 +1,32 @@
+---
+postgres_version: 17
+postgres_user: postgres
+postgres_group: postgres
+
+# INSTALL
+# -------
+postgres_install_add_pkgs: []
+# - postgis
+
+# CONFIG
+# ------
+postgres_config_overrides: {}
+
+# DATABASE
+# --------
+postgres_databases: []
+# - item.name
+#   item.owner
+
+# USERS
+# -----
+postgres_users: []
+# - item.name
+#   item.pw
+
+# EXTENSIONS
+# ----------
+postgres_extensions: []
+# - postgis
+# - pg_trgm
+# - unaccent

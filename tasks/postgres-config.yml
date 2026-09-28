@@ -1,0 +1,30 @@
+---
+- tags: [role-postgres-config]
+  block:
+
+  # assert
+  - name: Assertions for postgres-config
+    ansible.builtin.assert:
+      that:
+      - postgres_config_overrides is not string
+      - postgres_config_overrides is iterable
+      - postgres_config_overrides is mapping
+
+  # mkdir
+  - name: Mkdir overrides
+    ansible.builtin.file:
+      path: "/etc/postgresql/{{ postgres_version }}/main/conf.d"
+      state: directory
+      owner: "{{ postgres_user }}"
+      group: "{{ postgres_group }}"
+      mode: "0755"
+
+  # template
+  - name: Template config overrides to /etc/postgresql/{{ postgres_version }}/main/conf.d/99_ansible_overrides.conf
+    ansible.builtin.template:
+      src: postgres-overrides.conf.j2
+      dest: "/etc/postgresql/{{ postgres_version }}/main/conf.d/99_ansible_overrides.conf"
+      owner: "{{ postgres_user }}"
+      group: "{{ postgres_group }}"
+      mode: "0640"
+    notify: systemctl reload postgresql.service

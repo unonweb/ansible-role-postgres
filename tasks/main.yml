@@ -1,0 +1,9 @@
+---
+- name: postgres role
+  tags: [role-postgres]
+  block:
+
+  - ansible.builtin.import_tasks: postgres-install.yml
+  - ansible.builtin.import_tasks: postgres-users.yml
+  - ansible.builtin.import_tasks: postgres-databases.yml
+  - ansible.builtin.import_tasks: postgres-extensions.yml

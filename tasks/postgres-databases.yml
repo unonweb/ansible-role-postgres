@@ -1,0 +1,24 @@
+---
+- tags: [role-postgres-database]
+  when: postgres_databases | length > 0
+  block:
+  
+  # assert
+  - name: Assertions for postgres-database
+    loop: "{{ postgres_databases }}"
+    ansible.builtin.assert:
+      that:
+      - item.name != None
+      - item.owner != None
+
+  # create db
+  - name: Create databases
+    become: true
+    become_user: postgres
+    loop: "{{ mariadb_databases }}"
+    community.postgresql.postgresql_db:
+      name: "{{ item.name }}"
+      login_user: postgres
+      owner: "{{ item.user }}"
+      state: "{{ item.state | default('present') }}"
+    notify: systemctl reload postgresql.service

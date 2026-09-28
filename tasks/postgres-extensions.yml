@@ -1,0 +1,25 @@
+---
+- tags: [role-postgres-extensions]
+  when:
+  - postgres_extensions is not string
+  - postgres_extensions is iterable
+  - postgres_extensions | length > 0
+  block:
+
+  # assert
+  - name: Assertions for postgres-extensions
+    loop: "{{ postgres_extensions }}"
+    ansible.builtin.assert:
+      that:
+      - item.name != None
+      - item.db != None
+
+  # manage PostgreSQL extensions of a database
+  - name: Manage extensions {{ postgres_extensions }}
+    become: true
+    become_user: postgres
+    loop: "{{ postgres_extensions }}"
+    community.postgresql.postgresql_ext:
+      login_db: "{{ item.db }}"
+      name: "{{ item.name }}"
+    notify: systemctl reload postgresql.service
