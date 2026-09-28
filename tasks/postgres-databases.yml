@@ -15,7 +15,7 @@
   - name: Create databases
     become: true
     become_user: postgres
-    loop: "{{ mariadb_databases }}"
+    loop: "{{ postgres_databases }}"
     community.postgresql.postgresql_db:
       name: "{{ item.name }}"
       login_user: postgres
