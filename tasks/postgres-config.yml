@@ -9,6 +9,7 @@
       - postgres_config_overrides is not string
       - postgres_config_overrides is iterable
       - postgres_config_overrides is mapping
+      quiet: true
 
   # mkdir
   - name: Mkdir overrides

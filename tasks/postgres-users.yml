@@ -13,6 +13,7 @@
       that:
       - item.name != None
       - item.pw != None
+      quiet: true
 
   # create db user
   - name: Manage database users

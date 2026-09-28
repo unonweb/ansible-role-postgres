@@ -10,6 +10,7 @@
       that:
       - item.name != None
       - item.owner != None
+      quiet: true
 
   # create db
   - name: Manage databases
