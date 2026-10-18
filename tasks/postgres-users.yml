@@ -18,12 +18,11 @@
   # create db user
   - name: Manage database users
     become: true
-    become_user: postgres
+    become_user: postgres # we must use this user because of the way postgres authentication works
     loop: "{{ postgres_users }}"
     community.postgresql.postgresql_user:
       name: "{{ item.name }}"
       password: "{{ item.pw }}"
       state: "{{ item.state | default('present') }}"
       encrypted: true
-    notify: 
-    - systemctl reload postgresql.service
+    no_log: true
