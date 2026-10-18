@@ -1,4 +1,5 @@
 ---
 # load either vars/debian.yml or vars/redhat.yml
-- name: Include OS-specific variables
+- tags: [role-postgres-install]
+  name: Include OS-specific variables
   ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
