@@ -50,4 +50,4 @@
       state: directory
       owner: "{{ postgres_user }}"
       group: "{{ postgres_group }}"
-      mode: "0755"
+      mode: "0700"
