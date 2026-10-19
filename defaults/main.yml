@@ -2,6 +2,8 @@
 postgres_version: 17
 postgres_user: postgres
 postgres_group: postgres
+postgres_dir_data: "/var/lib/postgresql/{{ postgres_version }}/main"
+postgres_dir_config: "/etc/postgresql/{{ postgres_version }}/main"
 
 # INSTALL
 # -------

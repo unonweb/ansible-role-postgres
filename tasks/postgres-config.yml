@@ -9,23 +9,45 @@
       - postgres_config_overrides is not string
       - postgres_config_overrides is iterable
       - postgres_config_overrides is mapping
+      - postgres_dir_config != ""
+      - postgres_dir_data != ""
+      - postgres_user != ""
+      - postgres_group != ""
       quiet: true
 
-  # mkdir
-  - name: Mkdir overrides
+  # mkdir config
+  - name: Mkdir {{ postgres_dir_config }}
     ansible.builtin.file:
-      path: "/etc/postgresql/{{ postgres_version }}/main/conf.d"
+      path: "{{ postgres_dir_config }}"
+      state: directory
+      owner: root
+      group: root
+      mode: "0755"
+
+  # mkdir overrides
+  - name: Mkdir {{ postgres_dir_config }}/conf.d
+    ansible.builtin.file:
+      path: "{{ postgres_dir_config }}/conf.d"
+      state: directory
+      owner: root
+      group: root
+      mode: "0755"
+
+  # template config
+  - name: Template config overrides to {{ postgres_dir_config }}/conf.d/99_ansible_overrides.conf
+    ansible.builtin.template:
+      src: postgres-overrides.conf.j2
+      dest: "{{ postgres_dir_config }}/conf.d/99_ansible_overrides.conf"
+      owner: root
+      group: root
+      mode: "0644"
+    notify: systemctl reload postgresql.service
+
+  # mkdir data
+  - name: Mkdir {{ postgres_dir_data }}
+    ansible.builtin.file:
+      path: "{{ postgres_dir_data }}"
       state: directory
       owner: "{{ postgres_user }}"
       group: "{{ postgres_group }}"
       mode: "0755"
-
-  # template
-  - name: Template config overrides to /etc/postgresql/{{ postgres_version }}/main/conf.d/99_ansible_overrides.conf
-    ansible.builtin.template:
-      src: postgres-overrides.conf.j2
-      dest: "/etc/postgresql/{{ postgres_version }}/main/conf.d/99_ansible_overrides.conf"
-      owner: "{{ postgres_user }}"
-      group: "{{ postgres_group }}"
-      mode: "0640"
-    notify: systemctl reload postgresql.service
